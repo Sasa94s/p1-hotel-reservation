@@ -9,6 +9,19 @@ public class Room implements IRoom {
     protected Double price;
     protected RoomType roomType;
 
+    public Room(String roomNumber, Double price, RoomType roomType) {
+        if (price < 0) throw new IllegalArgumentException("Price cannot be negative");
+
+        this.roomNumber = roomNumber;
+        this.price = price;
+        this.roomType = roomType;
+    }
+
+    @Override
+    public String getId() {
+        return this.roomNumber;
+    }
+
     @Override
     public String getRoomNumber() {
         return this.roomNumber;

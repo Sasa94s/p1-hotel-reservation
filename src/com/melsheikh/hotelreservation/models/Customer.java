@@ -2,7 +2,7 @@ package com.melsheikh.hotelreservation.models;
 
 import com.melsheikh.hotelreservation.validators.EmailValidator;
 
-public class Customer {
+public class Customer implements Entity<String> {
     private String firstName;
     private String lastName;
     private String email;
@@ -16,6 +16,12 @@ public class Customer {
         this.lastName = lastName;
         this.email = email;
     }
+
+    @Override
+    public String getId() {
+        return this.email;
+    }
+
     public String getFirstName(){
         return this.firstName;
     }
