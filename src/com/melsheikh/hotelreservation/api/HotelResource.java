@@ -3,50 +3,53 @@ package com.melsheikh.hotelreservation.api;
 import com.melsheikh.hotelreservation.models.Customer;
 import com.melsheikh.hotelreservation.models.Reservation;
 import com.melsheikh.hotelreservation.models.types.IRoom;
+import com.melsheikh.hotelreservation.services.CustomerService;
+import com.melsheikh.hotelreservation.services.ReservationService;
 
 import java.util.Collection;
 import java.util.Date;
 
 public class HotelResource {
 
-    private static HotelResource instance = null;
+    private CustomerService customerService;
+    private ReservationService reservationService;
 
-    private HotelResource() {
-    }
-
-    public static HotelResource getInstance() {
-        if (instance == null) {
-            instance = new HotelResource();
-        }
-        return instance;
+    public HotelResource(CustomerService customerService, ReservationService reservationService) {
+        this.customerService = customerService;
+        this.reservationService = reservationService;
     }
 
     public Customer getCustomer(String email) {
-        // TODO - implement HotelResource.getCustomer
-        return null;
+        return customerService.getCustomer(email);
     }
 
-    public void createACustomer(String email, String firstName, String lastName) {
-        // TODO - implement HotelResource.createACustomer
+    public Customer createACustomer(String email, String firstName, String lastName) {
+        try {
+            customerService.getCustomer(email);
+            throw new IllegalArgumentException("Customer account email already exists.");
+        } catch (Exception e) {
+            return customerService.addCustomer(email, firstName, lastName);
+        }
     }
 
     public IRoom getRoom(String roomNumber) {
-        // TODO - implement HotelResource.getRoom
-        return null;
+        return reservationService.findRoom(roomNumber);
     }
 
     public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) {
-        // TODO - implement HotelResource.bookARoom
-        return null;
+        Customer customer = customerService.getCustomer(customerEmail);
+
+        return reservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
     }
 
     public Collection<Reservation> getCustomersReservations(String customerEmail) {
-        // TODO - implement HotelResource.getCustomersReservations
-        return null;
+        Customer customer = customerService.getCustomer(customerEmail);
+
+        return reservationService.getCustomersReservation(customer);
     }
 
     public Collection<IRoom> findARoom(Date checkIn, Date checkOut) {
-        // TODO - implement HotelResource.findARoom
-        return null;
+        return reservationService.findRooms(checkIn, checkOut);
     }
+
 }

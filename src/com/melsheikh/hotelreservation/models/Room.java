@@ -43,6 +43,19 @@ public class Room implements IRoom {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Room)) return false;
+
+        return ((Room) obj).roomNumber.equalsIgnoreCase(roomNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return roomNumber.toLowerCase().hashCode();
+    }
+
+    @Override
     public String toString() {
         return "Room{" +
                 "roomNumber='" + roomNumber + '\'' +

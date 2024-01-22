@@ -23,7 +23,23 @@ public class Reservation implements Entity<String> {
 
     @Override
     public String getId() {
-        return String.format("%s_%s", this.customer.getId(), this.room.getId());
+        return String.format("%s_%s_%s", this.customer.getId(), this.room.getId(), checkInDate);
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public IRoom getRoom() {
+        return room;
+    }
+
+    public Date getCheckInDate() {
+        return checkInDate;
+    }
+
+    public Date getCheckOutDate() {
+        return checkOutDate;
     }
 
     @Override
