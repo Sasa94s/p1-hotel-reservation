@@ -14,6 +14,7 @@ import static java.lang.System.err;
 import static java.lang.System.out;
 
 public abstract class AbstractMenu implements Menu {
+    private boolean isRunning;
     protected Scanner scanner;
     protected final Map<Integer, MenuItem> menuOptions;
     protected static final AtomicInteger currentChoice = new AtomicInteger(-1);
@@ -21,6 +22,7 @@ public abstract class AbstractMenu implements Menu {
     protected AbstractMenu(Scanner scanner, Map<Integer, MenuItem> menuOptions) {
         this.scanner = scanner;
         this.menuOptions = menuOptions;
+        this.isRunning = true;
     }
 
     @Override
@@ -30,8 +32,8 @@ public abstract class AbstractMenu implements Menu {
             out.printf("%d. %s%n", entry.getKey(), entry.getValue().getTitle());
         }
         out.println("-".repeat(Constants.CONSOLE_WIDTH));
-        out.printf("Please select a number for the menu option [%d...%d]%n", 1, menuOptions.size());
-        currentChoice.set(scanner.nextInt());
+        int choice = enterInteger(String.format("Please select a number for the menu option [%d...%d]%n", 1, menuOptions.size()));
+        currentChoice.set(choice);
         processMenu();
     }
 
@@ -47,7 +49,7 @@ public abstract class AbstractMenu implements Menu {
                 } catch (Exception e) {
                     err.printf("Error: %s%n", e.getMessage());
                 } finally {
-                    displayMenu();
+                    if (isRunning) displayMenu();
                 }
             });
         });
@@ -95,6 +97,18 @@ public abstract class AbstractMenu implements Menu {
         return enterConstant(s);
     }
 
+    protected int enterInteger(String s) {
+        out.print(s);
+        try {
+            String i = scanner.next();
+
+            return Integer.parseInt(i);
+        } catch (Exception e) {
+            out.println("Error " + e.getMessage());
+            return enterInteger(s);
+        }
+    }
+
     protected double enterDouble(String s) {
         out.print(s);
         try {
@@ -120,5 +134,11 @@ public abstract class AbstractMenu implements Menu {
     @Override
     public void close() {
         scanner.close();
+    }
+
+    protected void exit() {
+        isRunning = false;
+        scanner.close();
+        out.println("Goodbye!");
     }
 }

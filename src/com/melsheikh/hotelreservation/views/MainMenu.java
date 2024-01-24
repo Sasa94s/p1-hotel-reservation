@@ -108,12 +108,6 @@ public class MainMenu extends AbstractMenu {
         return hotelResource.createACustomer(email, firstName, lastName);
     }
 
-
-    private void exit() {
-        scanner.close();
-        out.println("Goodbye!");
-    }
-
     public void setAdminMenuNavigation(Runnable navigation) {
         menuOptions.get(4).setAction(navigation);
     }
