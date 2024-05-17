@@ -30,7 +30,7 @@ public class AdminResource {
     }
 
     public void addRoom(String roomNumber, Double price, String roomType) {
-        RoomType type = EnumHelper.getEnumConstant(RoomType.class, Integer.parseInt(roomType) - 1);
+        RoomType type = EnumHelper.getEnumConstant(RoomType.class, Integer.parseInt(roomType));
         IRoom room;
         if (price == 0.0) {
             room = new FreeRoom(roomNumber, price, type);

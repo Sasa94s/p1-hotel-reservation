@@ -66,7 +66,7 @@ public class AdminMenu extends AbstractMenu {
         String roomNo = enterText("Enter room number: ");
         double price = enterDouble("Enter price per night: ");
         RoomType roomType = enterConstant("Enter room type (1 = 'Single Bed', 2 = 'Double Bed'): ");
-        adminResource.addRoom(roomNo, price, String.valueOf(roomType.ordinal()));
+        adminResource.addRoom(roomNo, price, String.valueOf(roomType.ordinal() + 1));
         if (enterYesOrNo("Would you like to add another new room? (Y/N): ")) addARoom();
     }
 
