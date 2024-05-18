@@ -8,6 +8,7 @@ import com.melsheikh.hotelreservation.models.types.IRoom;
 import com.melsheikh.hotelreservation.views.base.AbstractMenu;
 import com.melsheikh.hotelreservation.views.base.MenuItem;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 import java.util.Scanner;
@@ -74,8 +75,13 @@ public class MainMenu extends AbstractMenu {
 
     private void findAndReserveARoom() {
         out.println("Find and reserve a room:-");
-        Date checkOutDate = enterDate("Enter CheckOut Date mm/dd/yyyy (e.g. 2/21/2020): ");
+        Date now = stripTime(new Date());
         Date checkInDate = enterDate("Enter CheckIn Date mm/dd/yyyy (e.g. 02/01/2020): ");
+        Date checkOutDate = enterDate("Enter CheckOut Date mm/dd/yyyy (e.g. 2/21/2020): ");
+        if (!checkOutDate.after(checkInDate) || checkInDate.before(now)) {
+            out.println("CheckOut is not after CheckIn date or CheckIn date is invalid");
+            findAndReserveARoom();
+        }
         hotelResource.findARoom(checkInDate, checkOutDate).forEach(out::println);
 
         out.println();

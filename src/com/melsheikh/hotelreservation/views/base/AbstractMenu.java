@@ -5,6 +5,8 @@ import com.melsheikh.hotelreservation.helpers.DateHelper;
 import com.melsheikh.hotelreservation.helpers.EnumHelper;
 import com.melsheikh.hotelreservation.models.types.RoomType;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Scanner;
@@ -18,6 +20,7 @@ public abstract class AbstractMenu implements Menu {
     protected Scanner scanner;
     protected final Map<Integer, MenuItem> menuOptions;
     protected static final AtomicInteger currentChoice = new AtomicInteger(-1);
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
     protected AbstractMenu(Scanner scanner, Map<Integer, MenuItem> menuOptions) {
         this.scanner = scanner;
@@ -120,12 +123,20 @@ public abstract class AbstractMenu implements Menu {
     protected Date enterDate(String s) {
         try {
             String date = enterText(s);
-            return DateHelper.parseDate(date);
+            return stripTime(DateHelper.parseDate(date));
         } catch (Exception e) {
             out.println("Invalid date format");
         }
 
         return enterDate(s);
+    }
+
+    public static Date stripTime(Date date) {
+        try {
+            return dateFormat.parse(dateFormat.format(date));
+        } catch (ParseException e) {
+            return null;
+        }
     }
 
     @Override
