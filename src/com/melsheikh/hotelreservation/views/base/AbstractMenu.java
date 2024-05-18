@@ -100,9 +100,7 @@ public abstract class AbstractMenu implements Menu {
     protected int enterInteger(String s) {
         out.print(s);
         try {
-            String i = scanner.next();
-
-            return Integer.parseInt(i);
+            return Integer.parseInt(scanner.next());
         } catch (Exception e) {
             out.println("Error " + e.getMessage());
             return enterInteger(s);
@@ -112,12 +110,11 @@ public abstract class AbstractMenu implements Menu {
     protected double enterDouble(String s) {
         out.print(s);
         try {
-            return scanner.nextDouble();
+            return Double.parseDouble(scanner.next());
         } catch (Exception e) {
-            out.println(e.getMessage());
+            out.println("Error " + e.getMessage());
+            return 0.0d;
         }
-
-        return enterDouble(s);
     }
 
     protected Date enterDate(String s) {
